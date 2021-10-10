@@ -51,7 +51,7 @@ var Config Yaml
 
 func init() {
 
-	content, err := ioutil.ReadFile(Xdd.Get("cogradient", "/etc/sillyGirl/develop/cogradient.yaml"))
+	content, err := ioutil.ReadFile(Xdd.Get("cogradient", "/etc/sillyGirl/develop/multi_containers"))
 	if err != nil {
 		logs.Warn("解析config.yaml读取错误: %v", err)
 	}
