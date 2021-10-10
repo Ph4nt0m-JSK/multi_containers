@@ -13,7 +13,7 @@
     #第三步 填写 cogradient.yaml 配置文件 重新编译 重启 搞定
 
     # 设置配置文件地址
-    set xdd cogradient /etc/sillyGirl/develop/cogradient.yaml 
+    set xdd cogradient /etc/sillyGirl/develop/multi_containers/cogradient.yaml
     
     # 设置同步间隔时间
     set xdd cogradient sync */30 * * * *
