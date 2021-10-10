@@ -4,17 +4,16 @@
 * 同步 
 * 状态
 * 转换
-#```
-# 设置配置文件地址
-set xdd cogradient /etc/sillyGirl/develop/cogradient.yaml 
-
-# 设置同步间隔时间
-set xdd cogradient sync */30 * * * *
-
-# 设置Wskey转换时间
-set xdd cogradient conversion 0 7,19 * * *
-
-#```
+#
+    # 设置配置文件地址
+    set xdd cogradient /etc/sillyGirl/develop/cogradient.yaml 
+    
+    # 设置同步间隔时间
+    set xdd cogradient sync */30 * * * *
+    
+    # 设置Wskey转换时间
+    set xdd cogradient conversion 0 7,19 * * *
+#
 
 
 ## 特别声明: 
