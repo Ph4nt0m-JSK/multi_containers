@@ -1,14 +1,14 @@
 mode: balance
 containers:
-  - address:
+  - address: http://127.0.0.1:5700
     name: ql1
-    client_id:
-    client_secret:
-    mode: parallel
+    client_id: client_id
+    client_secret: client_secret
+    mode: parallel #傻妞监听容器请设置为 parallel 其他容器 balance
     help: false
     limit: 99999
   - address:
-    name: ql1
+    name: ql2
     client_id:
     client_secret:
     mode: balance
@@ -26,6 +26,6 @@ containers:
     mode: balance
     limit: 80
 theme:
-database:
+database: 数据库
 resident:
 
