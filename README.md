@@ -1,10 +1,21 @@
 # multi_containers
 自用傻妞多容器扩展
 ## 命令
-* set xdd cogradient /etc/sillyGirl/develop/cogradient.yaml(默认配置文件位置) 
-* 同步 -- 手动同步ck到多容器 会自动同步QQ绑定到傻妞
+* 同步 
 * 状态
 * 转换
+...
+# 设置配置文件地址
+set xdd cogradient /etc/sillyGirl/develop/cogradient.yaml 
+
+# 设置同步间隔时间
+set xdd cogradient sync */30 * * * *
+
+# 设置Wskey转换时间
+set xdd cogradient conversion 0 7,19 * * *
+
+...
+
 
 ## 特别声明: 
 
