@@ -1,0 +1,31 @@
+mode: balance
+containers:
+  - address:
+    name: ql1
+    client_id:
+    client_secret:
+    mode: parallel
+    help: false
+    limit: 99999
+  - address:
+    name: ql1
+    client_id:
+    client_secret:
+    mode: balance
+    limit: 80
+  - address:
+    name: ql3
+    client_id:
+    client_secret:
+    mode: balance
+    limit: 80
+  - address:
+    name: ql4
+    client_id:
+    client_secret:
+    mode: balance
+    limit: 80
+theme:
+database:
+resident:
+

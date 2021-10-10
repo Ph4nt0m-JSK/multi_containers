@@ -2,25 +2,27 @@ package xdd
 
 import (
 	"fmt"
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/sillyGirl/core"
 	"gorm.io/gorm"
 	"math"
-	"math/rand"
 	"strconv"
 	"strings"
 )
 
+var Xdd = core.NewBucket("xdd")
 
-var xdd = core.NewBucket("xdd")
-var spec = "0 " + strconv.Itoa(rand.Intn(59)) + " " + Config.CTime + "/12 * * ?" //cron表达式，每秒一次
 func init() {
 	core.AddCommand("xdd", []core.Function{
 		{
 			Rules: []string{`raw ^同步`},
-			Cron:  xdd.Get("update", "59 * * * *"),
+			Cron:  Xdd.Get("sync", "*/30 * * * *"),
 			Admin: true,
 			Handle: func(s core.Sender) interface{} {
-				CogradientContainers(s)
+				CogradientContainers()
+				s.Reply("账号同步容器完成", core.E)
+				migrateQQBinding()
+				s.Reply("QQ绑定同步完成", core.E)
 				return nil
 			},
 		},
@@ -34,20 +36,10 @@ func init() {
 		{
 
 			Rules: []string{`raw ^转换`, `raw ^zh`},
-			Cron:  xdd.Get("update", spec),
+			Cron:  Xdd.Get("conversion", "0 7,19 * * *"),
 			Admin: true,
 			Handle: func(s core.Sender) interface{} {
-				fmt.Println("开始wskey转换")
-				updateCookie(s)
-				return nil
-			},
-		},
-		{
-
-			Rules: []string{`raw ^优先级`},
-			Admin: true,
-			Handle: func(s core.Sender) interface{} {
-				fmt.Println("开始wskey转换")
+				s.Reply("开始wskey转换", core.E)
 				updateCookie(s)
 				return nil
 			},
@@ -55,7 +47,33 @@ func init() {
 	})
 }
 
-func CogradientContainers(s core.Sender) {
+func migrateQQBinding() {
+	pinQQ := core.NewBucket("pinQQ")
+	logs.Info("开始同步QQ绑定")
+	// 先将傻妞的绑定关系同步到数据库
+	pinQQ.Foreach(func(k, v []byte) error {
+		ck := JdCookie{}
+		ck.PtPin = string(k)
+		qq, err := strconv.Atoi(string(v))
+		if err == nil && qq > 0 {
+			ck.Update(QQ, qq)
+		}
+		return nil
+	})
+	cks := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
+		return sb.Where(fmt.Sprintf("%s > ?", QQ), 0)
+	})
+	for _, ck := range cks {
+		pinQQ.Get(ck.PtPin)
+		if ck.QQ >= 0 {
+			pinQQ.Set(ck.PtPin, ck.QQ)
+		}
+	}
+	logs.Info("开始同步QQ绑定完成")
+}
+
+func CogradientContainers() {
+	logs.Info("开始同步")
 	cks := GetJdCookies(func(sb *gorm.DB) *gorm.DB {
 		return sb.Where(fmt.Sprintf("%s >= ? and %s != ?", Priority, Hack), 0, True)
 	})
@@ -162,7 +180,7 @@ func CogradientContainers(s core.Sender) {
 			parallels[i].Write(append(resident, bat...))
 		}
 	}
-	s.Reply("账号同步容器完成", core.E)
+	logs.Info("账号同步容器完成")
 }
 
 func count() interface{} {

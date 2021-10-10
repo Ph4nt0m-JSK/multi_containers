@@ -21,7 +21,7 @@ var keys map[string]bool
 var pins map[string]bool
 var wsKeys map[string]bool
 
-func initDB() {
+func init() {
 	var err error
 	var c = &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
@@ -335,4 +335,3 @@ func CheckIn(pin, key string) int {
 	}
 	return 2
 }
-

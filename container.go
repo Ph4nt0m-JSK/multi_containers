@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"regexp"
 	"strings"
@@ -36,8 +37,28 @@ type Container struct {
 	Config       string
 	Limit        int
 }
+type Yaml struct {
+	Containers      []Container
+	Database        string
+	DefaultPriority int `yaml:"default_priority"`
+	Resident        string
+	Mode            string
+}
 
-func initContainer() {
+var Parallel = "parallel"
+var Cdle = false
+var Config Yaml
+
+func init() {
+
+	content, err := ioutil.ReadFile(Xdd.Get("cogradient", "/etc/sillyGirl/develop/cogradient.yaml"))
+	if err != nil {
+		logs.Warn("解析config.yaml读取错误: %v", err)
+	}
+	if yaml.Unmarshal(content, &Config) != nil {
+		logs.Warn("解析config.yaml出错: %v", err)
+	}
+
 	for i := range Config.Containers {
 		if Config.Containers[i].Weigth == 0 {
 			Config.Containers[i].Weigth = 1
@@ -177,7 +198,7 @@ func (c *Container) request(ss ...string) ([]byte, error) {
 			method = s
 		} else if strings.Contains(s, "/open/") {
 			api = s
-		}  else {
+		} else {
 			body = s
 		}
 	}
