@@ -45,10 +45,6 @@ type Yaml struct {
 	Mode            string
 }
 
-var Parallel = "parallel"
-var Cdle = false
-var Config Yaml
-
 func init() {
 
 	content, err := ioutil.ReadFile(Xdd.Get("cogradient", "/etc/sillyGirl/develop/multi_containers/cogradient.yaml"))

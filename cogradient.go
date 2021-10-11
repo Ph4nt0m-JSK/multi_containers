@@ -10,8 +10,6 @@ import (
 	"strings"
 )
 
-var Xdd = core.NewBucket("xdd")
-
 func init() {
 	core.AddCommand("xdd", []core.Function{
 		{

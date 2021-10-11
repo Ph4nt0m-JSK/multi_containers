@@ -20,7 +20,7 @@ func getQLHelp(num int) map[string]string {
 	}
 	cks := GetJdCookies()
 	for _, ck := range cks {
-		if ck.Help == True || Cdle {
+		if ck.Help == True {
 			for k := range codes {
 				switch k {
 				case "Fruit":

@@ -6,8 +6,8 @@ import (
 )
 
 func init() {
-	core.Tail = ""
-	core.Server.GET("/", func(c *gin.Context) {
+	server := core.Server
+	server.GET(Web.Get("path", "/web"), func(c *gin.Context) {
 		c.String(200, "11111111111111111111111111")
 	})
 }
