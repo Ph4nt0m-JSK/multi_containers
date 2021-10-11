@@ -6,17 +6,12 @@ import (
 	"time"
 
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 var db *gorm.DB
-var JD_COOKIE = "JD_COOKIE"
-var RECORD = "RECORD"
-var ENV = "env"
-var TASK = "TASK"
 var keys map[string]bool
 var pins map[string]bool
 var wsKeys map[string]bool
@@ -28,8 +23,6 @@ func init() {
 	}
 	if strings.Contains(Config.Database, "@tcp(") {
 		db, err = gorm.Open(mysql.Open(Config.Database), c)
-	} else if strings.Contains(Config.Database, "dbname=") {
-		db, err = gorm.Open(postgres.Open(Config.Database), c)
 	} else {
 		db, err = gorm.Open(sqlite.Open(Config.Database), c)
 	}
