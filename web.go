@@ -4,8 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/astaxie/beego/logs"
+	"github.com/beego/beego/v2/adapter/httplib"
 	"github.com/cdle/sillyGirl/core"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"os"
+	"strings"
 )
 
 type CkLogin struct {
@@ -15,10 +19,35 @@ type CkLogin struct {
 	Token string `json:"token"`
 }
 
+var theme = ""
+
 func init() {
 	server := core.Server
 	server.GET(Web.Get("path", "/web"), func(c *gin.Context) {
 		c.String(200, "11111111111111111111111111")
+		if Config.Theme == "" {
+			Config.Theme = GhProxy + "https://raw.githubusercontent.com/xiaeroc/xdd/master/myTheme/kuduan.html"
+		}
+		if theme != "" {
+			c.Writer.WriteString(theme)
+			return
+		}
+		if strings.Contains(Config.Theme, "http") {
+			s, _ := httplib.Get(Config.Theme).String()
+			if s != "" {
+				theme = s
+				c.Writer.WriteString(s)
+				return
+			}
+
+		}
+		f, err := os.Open(Config.Theme)
+		if err == nil {
+			d, _ := ioutil.ReadAll(f)
+			theme = string(d)
+			c.Writer.WriteString(string(d))
+			return
+		}
 	})
 
 	server.GET(Web.Get("ckLogin", "/ckLogin"), func(c *gin.Context) {

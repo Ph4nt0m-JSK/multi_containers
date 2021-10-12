@@ -43,6 +43,7 @@ type Yaml struct {
 	DefaultPriority int `yaml:"default_priority"`
 	Resident        string
 	Mode            string
+	Theme           string
 }
 
 func init() {
